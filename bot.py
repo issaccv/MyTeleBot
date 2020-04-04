@@ -1,5 +1,5 @@
 import time
-
+import re
 import flask
 import requests
 import telebot
@@ -8,7 +8,8 @@ from telebot import apihelper
 import config
 
 TOKEN = config.TOKEN
-WEBHOOK_HOST = 'https://unlock.issac.bid'
+IP_TOKEN = config.IP_TOKEN    
+WEBHOOK_HOST = 'https://unlock.issacc.bid'
 WEBHOOK_PORT = 443
 WEBHOOK_LISTEN = '0.0.0.0'
 
@@ -57,6 +58,35 @@ def random_zuan(message):
     bot.send_chat_action(message.chat.id, 'typing')
     msg = get_zuan({'lang': 'zh_cn'})
     bot.send_message(message.chat.id, msg.text)
+
+@bot.message_handler(commands=['ip'])
+def get_ipinfo(message):
+    bot.send_chat_action(message.chat.id, 'typing')
+    api_url = 'https://ipinfo.io/json/'
+    try:
+        ip = message.chat.text.split()[1]
+        p = re.compile("^((?:(2[0-4]\d)|(25[0-5])|([01]?\d\d?))\.){3}(?:(2[0-4]\d)|(255[0-5])|([01]?\d\d?))$")
+        m = p.match(ip)
+        if m:
+            params = {
+                'token': IP_TOKEN
+            }
+            r = requests.get(api_url + m.group(), params=params).json()
+            def info(data):
+                t = []
+                for k, v in data.items():
+                    if k=="asn":
+                        pass
+                    else:
+                        t.append(k+":"+v)
+                for k, v in data['asn'].items():
+                    t.append(k+":"+v)
+                message = '\n'.join(t)
+                return message
+            message = info(r)
+            bot.send_message(message.chat.id, message)
+    except:
+        bot.send_message(message.chat.id, 'Require Valid IP')
 
 bot.remove_webhook()
 
