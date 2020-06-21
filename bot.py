@@ -11,9 +11,6 @@ TOKEN = config.TOKEN
 IP_TOKEN = config.IP_TOKEN
 
 
-WEBHOOK_SSL_CERT = ""
-WEBHOOK_SSL_PRIV = ""
-
 WEBHOOK_URL_BASE = "https://{}:{}".format(config.WEBHOOK_HOST, config.WEBHOOK_PORT)
 WEBHOOK_URL_PATH = "/{}/".format(TOKEN)
 # apihelper.proxy = {'https':'socks5://127.0.0.1:10808'}

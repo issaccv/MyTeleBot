@@ -5,3 +5,6 @@ IP_TOKEN = "a171253af9739b"
 WEBHOOK_HOST = "unlock.issacc.bid"
 
 WEBHOOK_PORT = 443
+
+WEBHOOK_SSL_CERT = ""
+WEBHOOK_SSL_PRIV = ""
